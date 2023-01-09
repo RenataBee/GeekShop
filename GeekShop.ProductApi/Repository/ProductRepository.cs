@@ -47,18 +47,17 @@ namespace GeekShop.ProductApi.Repository
         public async Task<ProductDto> UpdateProduct(ProductDto productDto)
         {
             var dbProduct = await _dataContext.Products.Where(p => p.Id == productDto.Id).FirstOrDefaultAsync();
-            var product = _mapper.Map<Product>(productDto);
-
+            
             if (dbProduct != null)
             {
-                dbProduct.Name = product.Name;
-                dbProduct.Description = product.Description;
-                dbProduct.price = product.price;
-                dbProduct.CategoryName = product.CategoryName;
-                dbProduct.ImageUrl = product.ImageUrl; 
+                dbProduct.Name = productDto.Name;
+                dbProduct.Description = productDto.Description;
+                dbProduct.price = productDto.price;
+                dbProduct.CategoryName = productDto.CategoryName;
+                dbProduct.ImageUrl = productDto.ImageUrl;
             }
 
-            _dataContext.Update(product);
+            _dataContext.Update(dbProduct);
             await _dataContext.SaveChangesAsync();
             return _mapper.Map<ProductDto>(dbProduct);
         }

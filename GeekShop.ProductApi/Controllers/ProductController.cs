@@ -32,14 +32,14 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddProduct(ProductDto input)
+        public async Task<IActionResult> AddProduct([FromBody] ProductDto input)
         {
             var productDto = await _productService.AddProduct(input);
             return Ok(productDto);
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateProduct(ProductDto input)
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductDto input)
         {
             var productDto = await _productService.UpdateProduct(input);
             return Ok(productDto);

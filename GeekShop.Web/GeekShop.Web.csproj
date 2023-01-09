@@ -7,9 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BH.Swashbuckle.AspNetCore.SwaggerGen" Version="4.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.0.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.0.0" />
+    <Folder Include="wwwroot\Images\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\Images\favicon.png" />
+    <None Include="wwwroot\Images\geek_shopping.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GeekShop.ProductApi\GeekShop.ProductApi.csproj" />
   </ItemGroup>
 
 </Project>
