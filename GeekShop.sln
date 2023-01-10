@@ -7,11 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Geek.Interface", "Geek.Inte
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Geek.Services", "Geek.Services", "{E6A48639-65DC-4101-A6F8-0843BA039D13}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekShop.Web", "GeekShop.Web\GeekShop.Web.csproj", "{B8181D36-CF31-408C-918B-2C5CEF5F10E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShop.Web", "GeekShop.Web\GeekShop.Web.csproj", "{B8181D36-CF31-408C-918B-2C5CEF5F10E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GeekShop.ProductApi", "GeekShop.ProductApi\GeekShop.ProductApi.csproj", "{8B3C1E6F-CE68-422E-A127-23DAA0DCFBA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShop.ProductApi", "GeekShop.ProductApi\GeekShop.ProductApi.csproj", "{8B3C1E6F-CE68-422E-A127-23DAA0DCFBA9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Geek.Tests", "Geek.Tests", "{78296AD6-02CD-479C-BD0E-7C70D3678895}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GeekShop.IdentityServer", "Geek.IdentityServer\GeekShop.IdentityServer.csproj", "{07776115-0CC1-4E5E-AEFB-F196E4385FAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{8B3C1E6F-CE68-422E-A127-23DAA0DCFBA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8B3C1E6F-CE68-422E-A127-23DAA0DCFBA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8B3C1E6F-CE68-422E-A127-23DAA0DCFBA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07776115-0CC1-4E5E-AEFB-F196E4385FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07776115-0CC1-4E5E-AEFB-F196E4385FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07776115-0CC1-4E5E-AEFB-F196E4385FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07776115-0CC1-4E5E-AEFB-F196E4385FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +40,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B8181D36-CF31-408C-918B-2C5CEF5F10E9} = {893F860D-DB2A-48B0-9BAA-8D656B203027}
 		{8B3C1E6F-CE68-422E-A127-23DAA0DCFBA9} = {E6A48639-65DC-4101-A6F8-0843BA039D13}
+		{07776115-0CC1-4E5E-AEFB-F196E4385FAB} = {E6A48639-65DC-4101-A6F8-0843BA039D13}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2CC2154E-21A7-475F-94BF-0CDFB4F0AFC6}
