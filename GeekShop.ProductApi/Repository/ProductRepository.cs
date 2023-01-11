@@ -57,7 +57,7 @@ namespace GeekShop.ProductApi.Repository
                 dbProduct.ImageUrl = productDto.ImageUrl;
             }
 
-            _dataContext.Update(dbProduct);
+             _dataContext.Update(dbProduct);
             await _dataContext.SaveChangesAsync();
             return _mapper.Map<ProductDto>(dbProduct);
         }
