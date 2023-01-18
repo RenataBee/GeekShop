@@ -1,5 +1,7 @@
 ﻿using GeekShop.ProductApi.DTOs;
 using GeekShop.ProductApi.IServices;
+using GeekShop.ProductApi.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShop.ProductApi.Controllers
@@ -16,6 +18,7 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
             var productsDtos = await _productService.GetProducts();
@@ -23,6 +26,7 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetProductById(int id)
         {
             var productDto = await _productService.GetProductById(id);
@@ -32,6 +36,7 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddProduct([FromBody] ProductDto input)
         {
             var productDto = await _productService.AddProduct(input);
@@ -39,6 +44,7 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpPut]
+        [Authorize]
         public async Task<IActionResult> UpdateProduct([FromBody] ProductDto input)
         {
             var productDto = await _productService.UpdateProduct(input);
@@ -46,6 +52,7 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = RoleApi.Admin)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var status = await _productService.DeleteProduct(id);

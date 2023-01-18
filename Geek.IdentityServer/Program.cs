@@ -1,13 +1,13 @@
 using Geek.IdentityServer.Configuration;
 using Geek.IdentityServer.ModelDB.Context;
+using GeekShop.IdentityServer.Initialize;
 using GeekShop.IdentityServer.Model.Context;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-//DataContext
+//Add dataContext
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("IdentityServerConnection"));
@@ -17,8 +17,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<DataContext>()
     .AddDefaultTokenProviders();
 
-//Builder IdentityService
-builder.Services.AddIdentityServer(options =>
+//Add identity service
+var builderIdentity = builder.Services.AddIdentityServer(options =>
 {
     options.Events.RaiseErrorEvents = true;
     options.Events.RaiseInformationEvents = true;
@@ -27,16 +27,23 @@ builder.Services.AddIdentityServer(options =>
     options.EmitStaticAudienceClaim = true;
 
 }).AddInMemoryIdentityResources(IdentityConfiguration.IdentityResources)
-                    .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
-                    .AddInMemoryClients(IdentityConfiguration.Clients)
-                    .AddAspNetIdentity<ApplicationUser>();
+    .AddInMemoryApiScopes(IdentityConfiguration.ApiScopes)
+    .AddInMemoryClients(IdentityConfiguration.Clients)
+    .AddAspNetIdentity<ApplicationUser>();
 
-//builder.Services.AddDeveloperSigningCredential();
+//Add dependecy injection
+builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+
+builderIdentity.AddDeveloperSigningCredential();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+//create scope
+var scope = app.Services.CreateScope();
+var dbInitializer = scope.ServiceProvider.GetService<IDbInitializer>();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -47,11 +54,18 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
+
 app.UseIdentityServer();
+
 app.UseAuthorization();
+
+//app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+dbInitializer.Initialize();
 
 app.MapControllerRoute(
     name: "default",
