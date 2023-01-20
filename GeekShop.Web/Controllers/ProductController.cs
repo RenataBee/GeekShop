@@ -1,6 +1,7 @@
 ﻿using GeekShop.Web.Models;
 using GeekShop.Web.Services.IService;
 using GeekShop.Web.Utils;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,17 +9,16 @@ namespace GeekShop.Web.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductServiceUI _productServiceUI;
+        private readonly IProductService _productService;
 
-        public ProductController(IProductServiceUI productServiceUI)
+        public ProductController(IProductService productService)
         {
-            this._productServiceUI = productServiceUI ?? throw new ArgumentException(nameof(productServiceUI));
+            _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         }
 
-        [Authorize]
         public async Task<IActionResult> ProductIndex()
         {
-            var products = await _productServiceUI.GetProducts();
+            var products = await _productService.GetProducts("");
             return View(products);
         }
 
@@ -29,53 +29,60 @@ namespace GeekShop.Web.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> ProductCreate(ProductModel productModel)
+        public async Task<IActionResult> ProductCreate(ProductModel model)
         {
-            var response = new ProductModel();
-            if (ModelState != null)
+            if (ModelState.IsValid)
             {
-                response = await _productServiceUI.AddProduct(productModel);
+                var token = await HttpContext.GetTokenAsync("access_token");
+                var response = await _productService.AddProduct(model, token);
+
                 if (response != null) return RedirectToAction(nameof(ProductIndex));
             }
-            return View(productModel);
+            return View(model);
         }
 
         public async Task<IActionResult> ProductUpdate(int id)
         {
-            var modelProduct = await _productServiceUI.GetProductById(id);
-            if (modelProduct != null) return View(modelProduct);
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var model = await _productService.GetProductById(id, token);
+
+            if (model != null) return View(model);
             return NotFound();
         }
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> ProductUpdate(ProductModel productModel)
+        public async Task<IActionResult> ProductUpdate(ProductModel model)
         {
-            var response = new ProductModel();
-            if (ModelState != null)
+            if (ModelState.IsValid)
             {
-                response = await _productServiceUI.UpdateProduct(productModel);
+                var token = await HttpContext.GetTokenAsync("access_token");
+                var response = await _productService.UpdateProduct(model, token);
+
                 if (response != null) return RedirectToAction(nameof(ProductIndex));
             }
-            return View(productModel);
+            return View(model);
         }
 
         [Authorize]
         public async Task<IActionResult> ProductDelete(int id)
         {
-            var modelProduct = await _productServiceUI.GetProductById(id);
-            if (modelProduct != null) return View(modelProduct);
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var model = await _productService.GetProductById(id, token);
+
+            if (model != null) return View(model);
             return NotFound();
         }
 
-        [Authorize (Roles = Role.Admin)]
         [HttpPost]
-        public async Task<IActionResult> ProductDelete(ProductModel productModel)
+        [Authorize(Roles = Role.Admin)]
+        public async Task<IActionResult> ProductDelete(ProductModel model)
         {
-            var response = await _productServiceUI.DeleteProduct(productModel.Id);
-            if (response) return RedirectToAction(nameof(ProductIndex));
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var response = await _productService.DeleteProduct(model.Id, token);
 
-            return View(productModel);
+            if (response) return RedirectToAction(nameof(ProductIndex));
+            return View(model);
         }
     }
 }

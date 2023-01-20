@@ -24,7 +24,7 @@ namespace GeekShop.IdentityServer.Initialize
         public void Initialize()
         {
             if (_roleManager.FindByNameAsync(IdentityConfiguration.Admin).Result != null) return;
-
+           
             _roleManager.CreateAsync(new IdentityRole(IdentityConfiguration.Admin)).GetAwaiter().GetResult();
             _roleManager.CreateAsync(new IdentityRole(IdentityConfiguration.Client)).GetAwaiter().GetResult();
 
@@ -35,11 +35,11 @@ namespace GeekShop.IdentityServer.Initialize
                 EmailConfirmed = true,
                 PhoneNumber = "+351 934727285",
                 FirstName = "Renata",
-                LastName = "Admin",
+                LastName = "Admin"
             };
 
             _userManager.CreateAsync(admin, "d3Lim@1406").GetAwaiter().GetResult();
-            _userManager.AddToRoleAsync(admin, IdentityConfiguration.Admin).GetAwaiter().GetResult();
+            _userManager.AddToRoleAsync(admin,IdentityConfiguration.Admin).GetAwaiter().GetResult();
 
             var adminClaims = _userManager.AddClaimsAsync(admin, new Claim[] 
             {

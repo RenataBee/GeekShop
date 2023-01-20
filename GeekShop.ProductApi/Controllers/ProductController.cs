@@ -18,7 +18,6 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetProducts()
         {
             var productsDtos = await _productService.GetProducts();
@@ -52,7 +51,7 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = RoleApi.Admin)]
+        [Authorize(Roles = Role.Admin)]
         public async Task<IActionResult> DeleteProduct(int id)
         {
             var status = await _productService.DeleteProduct(id);

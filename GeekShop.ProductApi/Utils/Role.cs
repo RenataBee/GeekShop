@@ -1,6 +1,6 @@
 ﻿namespace GeekShop.ProductApi.Utils
 {
-    public class RoleApi
+    public class Role
     {
         public const string Admin = "Admin";
         public const string Client = "Client";

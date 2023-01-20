@@ -1,7 +1,9 @@
+using Duende.IdentityServer.Services;
 using Geek.IdentityServer.Configuration;
 using Geek.IdentityServer.ModelDB.Context;
 using GeekShop.IdentityServer.Initialize;
 using GeekShop.IdentityServer.Model.Context;
+using GeekShop.IdentityServer.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,6 +35,7 @@ var builderIdentity = builder.Services.AddIdentityServer(options =>
 
 //Add dependecy injection
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
+builder.Services.AddScoped<IProfileService, ProfileService>();
 
 builderIdentity.AddDeveloperSigningCredential();
 

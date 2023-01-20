@@ -32,13 +32,14 @@ builder.Services.AddControllers();
 //builder.Services.AddEndpointsApiExplorer();
 
 //Add authentication
-builder.Services.AddAuthentication("Bearer").AddJwtBearer(options =>
+builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 {
     options.Authority = "http://localhost:4435";
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateAudience = false
     };
+    options.RequireHttpsMetadata = false;
 });
 
 //Add authorization
@@ -51,20 +52,21 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+
 //Swagger
-builder.Services.AddSwaggerGen(s =>
+builder.Services.AddSwaggerGen(c =>
 {
-    s.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.ProductApi", Version = "v1" });
-    s.EnableAnnotations();
-    s.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.ProductApi", Version = "v1" });
+    c.EnableAnnotations();
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
-        Description = @"Enter 'Bearer' [space] and yout token!",
+        Description = @"Enter 'Bearer' [space] and your token!",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
         Scheme = "Bearer"
     });
-    s.AddSecurityRequirement(new OpenApiSecurityRequirement {
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement{
     {
         new OpenApiSecurityScheme
         {
@@ -73,13 +75,15 @@ builder.Services.AddSwaggerGen(s =>
                 Type = ReferenceType.SecurityScheme,
                 Id = "Bearer"
             },
-            Scheme = "oauth2",
+           Scheme = "oauth2",
             Name = "Bearer",
-            In = ParameterLocation.Header
+            In= ParameterLocation.Header
         },
-        new List<string>() }
+        new List<string> ()
+        }
     });
 });
+
 
 var app = builder.Build();
 
@@ -88,7 +92,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.ProductAPI v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.ProductApi v1"));
 }
 
 app.UseHttpsRedirection();
