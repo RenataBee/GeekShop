@@ -1,6 +1,9 @@
-﻿using GeekShop.Web.Models;
+﻿using Duende.IdentityServer.Models;
+using GeekShop.ProductApi.Model;
+using GeekShop.Web.Models;
 using GeekShop.Web.Services.IService;
 using GeekShop.Web.Utils;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace GeekShop.Web.Services
@@ -19,14 +22,14 @@ namespace GeekShop.Web.Services
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.GetAsync(BasePath);
-            return await response.ReadContentAsync<List<ProductModel>>();
+            return await response.ReadContentAs<List<ProductModel>>();
         }
-
         public async Task<ProductModel> GetProductById(int id, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.GetAsync($"{BasePath}/{id}");
-            return await response.ReadContentAsync<ProductModel>(); 
+            //var response = await _client.GetAsync("api/v1/Product/1");
+            return await response.ReadContentAs<ProductModel>();            
         }
 
         public async Task<ProductModel> AddProduct(ProductModel input, string token)
@@ -35,7 +38,7 @@ namespace GeekShop.Web.Services
             var response = await _client.PostAsJson(BasePath, input);
 
             if (response.IsSuccessStatusCode)
-                return await response.ReadContentAsync<ProductModel>(); 
+                return await response.ReadContentAs<ProductModel>(); 
             else
                 throw new Exception("Something went wrong when calling API");
         }
@@ -46,7 +49,7 @@ namespace GeekShop.Web.Services
             var response = await _client.PutAsJson(BasePath, input);
 
             if (response.IsSuccessStatusCode)
-                return await response.ReadContentAsync<ProductModel>();
+                return await response.ReadContentAs<ProductModel>();
             else
                 throw new Exception("Something went wrong when calling API");
         }
@@ -57,7 +60,7 @@ namespace GeekShop.Web.Services
             var response = await _client.DeleteAsync($"{BasePath}/{id}");
 
             if (response.IsSuccessStatusCode)
-                return await response.ReadContentAsync<bool>();
+                return await response.ReadContentAs<bool>();
             else
                 throw new Exception("Something went wrong when calling API");
         }

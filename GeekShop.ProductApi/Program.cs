@@ -5,6 +5,7 @@ using GeekShop.ProductApi.IServices;
 using GeekShop.ProductApi.Model.Context;
 using GeekShop.ProductApi.Repository;
 using GeekShop.ProductApi.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -34,7 +35,7 @@ builder.Services.AddControllers();
 //Add authentication
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>
 {
-    options.Authority = "http://localhost:4435";
+    options.Authority = "https://localhost:4435";
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateAudience = false

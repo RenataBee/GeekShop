@@ -1,5 +1,6 @@
 ﻿using GeekShop.ProductApi.DTOs;
 using GeekShop.ProductApi.IServices;
+using GeekShop.ProductApi.Model;
 using GeekShop.ProductApi.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace GeekShop.ProductApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetProducts()
         {
             var productsDtos = await _productService.GetProducts();
             return Ok(productsDtos);
@@ -26,11 +27,10 @@ namespace GeekShop.ProductApi.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<IActionResult> GetProductById(int id)
+        public async Task<ActionResult<ProductDto>> GetProductById(int id)
         {
             var productDto = await _productService.GetProductById(id);
-            
-            if (productDto.Id <= 0) return NotFound();
+            if (productDto == null) return NotFound();
             return Ok(productDto);
         }
 
