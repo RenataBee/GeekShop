@@ -79,9 +79,11 @@ namespace GeekShop.Web.Controllers
         public async Task<IActionResult> ProductDelete(ProductModel model)
         {
             var token = await HttpContext.GetTokenAsync("access_token");
-            var response = await _productService.DeleteProduct(model.Id, token);
-
-            if (response) return RedirectToAction(nameof(ProductIndex));
+            if (token != null)
+            {
+                var response = await _productService.DeleteProduct(model.Id, token);
+                if (response) return RedirectToAction(nameof(ProductIndex));
+            }                       
             return View(model);
         }
     }

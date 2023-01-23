@@ -1,31 +1,22 @@
 using AutoMapper;
-using GeekShop.ProductApi.Config.Mapping;
-using GeekShop.ProductApi.IRepository;
-using GeekShop.ProductApi.IServices;
-using GeekShop.ProductApi.Model.Context;
-using GeekShop.ProductApi.Repository;
-using GeekShop.ProductApi.Services;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using GeekShop.CartApi.Config.Mapping;
+using GeekShop.CartApi.Model.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//DataContext
+//Add DataContext
 builder.Services.AddDbContext<DataContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-//Mapper
+//Add Mapper
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-//Dependency Injection
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -52,10 +43,10 @@ builder.Services.AddAuthorization(options =>
 });
 
 
-//Swagger
+//Add swagger
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.ProductApi", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.CartApi", Version = "v1" });
     c.EnableAnnotations();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -84,6 +75,10 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+
+
+builder.Services.AddEndpointsApiExplorer();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -91,7 +86,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.ProductApi v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.CartApi v1"));
 }
 
 app.UseHttpsRedirection();
