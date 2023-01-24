@@ -1,5 +1,3 @@
-using GeekShop.ProductApi.IServices;
-using GeekShop.ProductApi.Services;
 using GeekShop.Web.Services;
 using GeekShop.Web.Services.IService;
 using Microsoft.AspNetCore.Authentication;
@@ -11,12 +9,11 @@ builder.Services.AddMvc();
 builder.Services.AddScoped<GeekShop.Web.Services.IService.IProductService, GeekShop.Web.Services.ProductService>();
 
 //Mapper
-builder.Services.AddHttpClient<GeekShop.Web.Services.IService.IProductService, GeekShop.Web.Services.ProductService>(c => 
+builder.Services.AddHttpClient<GeekShop.Web.Services.IService.IProductService, GeekShop.Web.Services.ProductService>(c =>
     c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductApi"]));
 
-//builder.Services.AddHttpClient<IProductServiceUI, ProductServiceUI>(c =>
-//    c.BaseAddress = new Uri("https://localhost:4440/"));
-
+builder.Services.AddHttpClient<ICartService, CartService>(c =>
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CartApi"]));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

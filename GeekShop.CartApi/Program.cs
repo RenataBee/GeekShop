@@ -1,6 +1,10 @@
 using AutoMapper;
 using GeekShop.CartApi.Config.Mapping;
+using GeekShop.CartApi.IRepository;
+using GeekShop.CartApi.IService;
 using GeekShop.CartApi.Model.Context;
+using GeekShop.CartApi.Repository;
+using GeekShop.CartApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -17,6 +21,10 @@ builder.Services.AddDbContext<DataContext>(options =>
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//Add dependecy injection
+builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -73,8 +81,6 @@ builder.Services.AddSwaggerGen(c =>
         }
     });
 });
-
-
 
 
 builder.Services.AddEndpointsApiExplorer();

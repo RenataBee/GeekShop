@@ -27,7 +27,7 @@ namespace GeekShop.CartApi.Repository
         {
             var cartHeader = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
 
-            if(cartHeader != null)
+            if (cartHeader != null)
             {
                 _dataContext.CartDetails.RemoveRange(_dataContext.CartDetails.
                     Where(c => c.CartHeaderId == cartHeader.Id));
@@ -45,11 +45,13 @@ namespace GeekShop.CartApi.Repository
             {
                 CartHeader = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId),
             };
-            cart.CartDetails = _dataContext.CartDetails.
-                Where(c => c.CartHeaderId == cart.CartHeader.Id).Include(c => c.Product);
 
+            if (cart != null)
+            {
+                cart.CartDetails = _dataContext.CartDetails.
+                        Where(c => c.CartHeaderId == cart.CartHeader.Id).Include(c => c.Product);
+            }
             return _mapper.Map<CartDto>(cart);
-
         }
 
         public async Task<bool> RemoveFromCart(int cartDetailId)
@@ -65,7 +67,7 @@ namespace GeekShop.CartApi.Repository
                 if (total == 1)
                 {
                     var cartHeaderToRemove = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.Id == cartDetail.CartHeaderId);
-                    if(cartHeaderToRemove != null) _dataContext.CartHeaders.Remove(cartHeaderToRemove);
+                    if (cartHeaderToRemove != null) _dataContext.CartHeaders.Remove(cartHeaderToRemove);
                 }
                 await _dataContext.SaveChangesAsync();
                 return true;
@@ -75,7 +77,7 @@ namespace GeekShop.CartApi.Repository
 
                 return false;
             }
-        }        
+        }
 
         public async Task<CartDto> SaveOrUpdateCart(CartDto cartDto)
         {
