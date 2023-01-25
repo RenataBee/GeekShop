@@ -1,5 +1,6 @@
 ﻿using GeekShop.CartApi.DTOs;
 using GeekShop.CartApi.IService;
+using GeekShop.CartApi.Model;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShop.CartApi.Controllers
@@ -24,12 +25,11 @@ namespace GeekShop.CartApi.Controllers
         }
 
         [HttpPost("add-cart")]
-        public async Task<ActionResult<CartDto>> AddCart(CartDto cartDto)
+        public async Task<ActionResult<CartDto>> AddCart([FromBody] CartDto input)        
         {
-            var cartDtoDB = await _cartService.SaveOrUpdateCart(cartDto);
-
-            if (cartDtoDB == null) return NotFound();
-            return Ok(cartDto);
+            var cart = await _cartService.SaveOrUpdateCart(input);
+            if (cart == null) return NotFound();
+            return Ok(cart);
         }
 
         [HttpPut("update-cart")]

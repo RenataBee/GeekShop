@@ -45,9 +45,9 @@ namespace GeekShop.Web.Services
         public async Task<CartViewModel> AddItemToCart(CartViewModel model, string token)
         {
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _client.PostAsJsonAsync($"{BasePath}/add-item-cart", model);
+            var response = await _client.PostAsJson($"{BasePath}/add-cart", model);
 
-            if (response.IsSuccessStatusCode) 
+            if (response.IsSuccessStatusCode)
                 return await response.ReadContentAs<CartViewModel>();
             else throw new Exception("Something went wrong when calling Cart API");
         }

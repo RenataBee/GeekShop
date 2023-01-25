@@ -13,33 +13,33 @@ namespace GeekShop.CartApi.Services
             _cartRepository = cartRepository;
         }
 
-        public Task<bool> ApplyCoupon(string userId, string couponCode)
+        public async Task<bool> ApplyCoupon(string userId, string couponCode)
         {
-            var isApplied = _cartRepository.ApplyCoupon(userId, couponCode);
+            var isApplied = await _cartRepository.ApplyCoupon(userId, couponCode);
             return isApplied;
         }
 
-        public Task<bool> ClearCart(string userId)
+        public async Task<bool> ClearCart(string userId)
         {
-            var isCleaned = _cartRepository.ClearCart(userId);
+            var isCleaned = await _cartRepository.ClearCart(userId);
             return isCleaned;
         }
 
-        public Task<CartDto> FindCartByUserId(string userId)
+        public async Task<CartDto> FindCartByUserId(string userId)
         {
-            var cartDto = _cartRepository.FindCartByUserId(userId);
+            var cartDto = await _cartRepository.FindCartByUserId(userId);
             return cartDto;
         }
 
-        public Task<bool> RemoveFromCart(int cartDetailId)
+        public async Task<bool> RemoveFromCart(int cartDetailId)
         {
-            var isRemoved = _cartRepository.RemoveFromCart(cartDetailId);
+            var isRemoved = await _cartRepository.RemoveFromCart(cartDetailId);
             return isRemoved;
         }
 
-        public Task<CartDto> SaveOrUpdateCart(CartDto cartDto)
+        public async Task<CartDto> SaveOrUpdateCart(CartDto cartDto)
         {
-            var cartDtoDB = _cartRepository.SaveOrUpdateCart(cartDto);
+            var cartDtoDB = await _cartRepository.SaveOrUpdateCart(cartDto);
             return cartDtoDB;
         }
     }
