@@ -16,9 +16,9 @@ namespace GeekShop.CartApi.Controllers
         }
 
         [HttpGet("find-cart/{id}")]
-        public async Task<ActionResult<CartDto>> FindCartByUserId(string userId)
+        public async Task<ActionResult<CartDto>> FindCartByUserId(string id)
         {
-            var cartDtoDB = await _cartService.FindCartByUserId(userId);
+            var cartDtoDB = await _cartService.FindCartByUserId(id);
 
             if (cartDtoDB == null) return NotFound();
             return Ok(cartDtoDB);
@@ -42,9 +42,10 @@ namespace GeekShop.CartApi.Controllers
         }
 
         [HttpDelete("remove-cart/{id}")]
-        public async Task<ActionResult<bool>> RemoveCart(int cartDetailId)
+        public async Task<ActionResult<bool>> RemoveCart(int id)
         {
-            var isRemoved = await _cartService.RemoveFromCart(cartDetailId);
+            //cartDetailId
+            var isRemoved = await _cartService.RemoveFromCart(id);
 
             if (!isRemoved) return NotFound();
             return Ok(isRemoved);

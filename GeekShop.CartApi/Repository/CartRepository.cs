@@ -58,7 +58,9 @@ namespace GeekShop.CartApi.Repository
         {
             try
             {
-                CartDetail cartDetail = await _dataContext.CartDetails.FirstOrDefaultAsync(c => c.CartHeaderId == cartDetailId);
+                CartDetail cartDetail = await _dataContext.CartDetails.FirstOrDefaultAsync(c => 
+                c.CartHeaderId == cartDetailId);
+                
                 int total = _dataContext.CartDetails.
                     Where(c => c.CartHeaderId == cartDetail.CartHeaderId).Count();
 
