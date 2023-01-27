@@ -1,10 +1,10 @@
 using AutoMapper;
-using GeekShop.CartApi.Config.Mapping;
-using GeekShop.CartApi.IRepository;
-using GeekShop.CartApi.IService;
-using GeekShop.CartApi.Model.Context;
-using GeekShop.CartApi.Repository;
-using GeekShop.CartApi.Services;
+using GeekShop.CouponApi.Config.Mapping;
+using GeekShop.CouponApi.IRepository;
+using GeekShop.CouponApi.IServices;
+using GeekShop.CouponApi.Repository;
+using GeekShop.CouponApi.Services;
+using GeekShop.CuponApi.Model.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -23,8 +23,8 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //Add dependecy injection
-builder.Services.AddScoped<ICartService, CartService>();
-builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -53,7 +53,7 @@ builder.Services.AddAuthorization(options =>
 //Add swagger
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.CartApi", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.CouponApi", Version = "v1" });
     c.EnableAnnotations();
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
@@ -88,7 +88,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.CartApi v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.CouponApi v1"));
 }
 
 app.UseHttpsRedirection();

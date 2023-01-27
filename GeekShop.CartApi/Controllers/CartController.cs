@@ -25,7 +25,7 @@ namespace GeekShop.CartApi.Controllers
         }
 
         [HttpPost("add-cart")]
-        public async Task<ActionResult<CartDto>> AddCart([FromBody] CartDto input)        
+        public async Task<ActionResult<CartDto>> AddCart(CartDto input)        
         {
             var cart = await _cartService.SaveOrUpdateCart(input);
             if (cart == null) return NotFound();
@@ -44,9 +44,24 @@ namespace GeekShop.CartApi.Controllers
         [HttpDelete("remove-cart/{id}")]
         public async Task<ActionResult<bool>> RemoveCart(int id)
         {
-            //cartDetailId
             var isRemoved = await _cartService.RemoveFromCart(id);
 
+            if (!isRemoved) return NotFound();
+            return Ok(isRemoved);
+        }
+
+        [HttpPost("apply-coupon")]
+        public async Task<ActionResult<bool>> ApplyCoupon(CartDto cartDto)
+        {
+            var isApplied = await _cartService.ApplyCoupon(cartDto.CartHeader.UserId, cartDto.CartHeader.CouponCode);
+            if (!isApplied) return NotFound();
+            return Ok(isApplied);
+        }
+
+        [HttpDelete("remove-coupon/{userId}")]
+        public async Task<ActionResult<bool>> RemoveCoupon(string userId)
+        {
+            var isRemoved = await _cartService.RemoveCoupon(userId);
             if (!isRemoved) return NotFound();
             return Ok(isRemoved);
         }

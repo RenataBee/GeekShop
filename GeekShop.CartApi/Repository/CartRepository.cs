@@ -18,9 +18,18 @@ namespace GeekShop.CartApi.Repository
             _mapper = mapper;
         }
 
-        public Task<bool> ApplyCoupon(string userId, string couponCode)
+        public async Task<bool> ApplyCoupon(string userId, string couponCode)
         {
-            throw new NotImplementedException();
+            var header = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (header != null)
+            {
+                header.CouponCode = couponCode;
+                _dataContext.CartHeaders.Update(header);
+
+                await _dataContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
 
         public async Task<bool> ClearCart(string userId)
@@ -59,8 +68,8 @@ namespace GeekShop.CartApi.Repository
             try
             {
                 CartDetail cartDetail = await _dataContext.CartDetails.FirstOrDefaultAsync(c => 
-                c.CartHeaderId == cartDetailId);
-                
+                c.Id == cartDetailId);
+
                 int total = _dataContext.CartDetails.
                     Where(c => c.CartHeaderId == cartDetail.CartHeaderId).Count();
 
@@ -138,6 +147,20 @@ namespace GeekShop.CartApi.Repository
                 }
             }
             return _mapper.Map<CartDto>(cart);
+        }
+
+        public async Task<bool> RemoveCoupon(string userId)
+        {
+            var header = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (header != null)
+            {
+                header.CouponCode = String.Empty;
+                _dataContext.CartHeaders.Update(header);
+
+                await _dataContext.SaveChangesAsync();
+                return true;
+            }
+            return false;
         }
     }
 }

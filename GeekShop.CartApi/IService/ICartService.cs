@@ -8,6 +8,7 @@ namespace GeekShop.CartApi.IService
         Task<bool> ClearCart(string userId);
         Task<CartDto> FindCartByUserId(string userId);
         Task<bool> RemoveFromCart(int cartDetailId);
+        Task<bool> RemoveCoupon(string userId);
         Task<CartDto> SaveOrUpdateCart(CartDto cartDto);
     }
 }

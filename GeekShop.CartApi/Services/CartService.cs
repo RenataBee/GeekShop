@@ -19,6 +19,14 @@ namespace GeekShop.CartApi.Services
             return isApplied;
         }
 
+        public async Task<bool> RemoveCoupon(string userId)
+        {
+            var isRemoved = await _cartRepository.RemoveCoupon(userId);
+            return isRemoved;
+        }
+
+
+
         public async Task<bool> ClearCart(string userId)
         {
             var isCleaned = await _cartRepository.ClearCart(userId);
