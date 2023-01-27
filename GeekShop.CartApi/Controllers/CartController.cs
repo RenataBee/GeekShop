@@ -1,5 +1,6 @@
 ﻿using GeekShop.CartApi.DTOs;
 using GeekShop.CartApi.IService;
+using GeekShop.CartApi.Messages;
 using GeekShop.CartApi.Model;
 using Microsoft.AspNetCore.Mvc;
 
@@ -64,6 +65,21 @@ namespace GeekShop.CartApi.Controllers
             var isRemoved = await _cartService.RemoveCoupon(userId);
             if (!isRemoved) return NotFound();
             return Ok(isRemoved);
+        }
+
+        [HttpPost("checkout")]
+        public async Task<ActionResult<CheckoutHeaderDtoMsg>> Checkout(CheckoutHeaderDtoMsg checkoutDtoMsg)
+        {
+            throw new NotImplementedException();
+            //var cart = await _cartService.FindCartByUserId(checkoutDtoMsg.UserId);
+
+            //if (cart == null) return NotFound();
+            //checkoutDtoMsg.CartDetails = cart.CartDetails;
+            //checkoutDtoMsg.DateTime = DateTime.Now;
+
+            ////TASK RabbitMQ logic comes here!!!
+
+            //return Ok(checkoutDtoMsg);
         }
     }
 }

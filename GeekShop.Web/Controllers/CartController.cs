@@ -44,6 +44,12 @@ namespace GeekShop.Web.Controllers
             return View();
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Checkout()
+        {
+            return View(await FindUserCart());
+        }
+
         [HttpPost]
         [ActionName("RemoveCoupon")]
         public async Task<IActionResult> RemoveCoupon()
