@@ -2,6 +2,7 @@
 using GeekShop.CartApi.IService;
 using GeekShop.CartApi.Messages;
 using GeekShop.CartApi.Model;
+using GeekShop.CartApi.RabbitMQSender;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShop.CartApi.Controllers
@@ -11,9 +12,12 @@ namespace GeekShop.CartApi.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
-        public CartController(ICartService cartService)
+        private IRabbitMQMessageSender _rabbitMQMessageSender;
+
+        public CartController(ICartService cartService, IRabbitMQMessageSender rabbitMQMessageSender)
         {
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
+            _rabbitMQMessageSender = rabbitMQMessageSender ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
 
         [HttpGet("find-cart/{id}")]
@@ -70,16 +74,16 @@ namespace GeekShop.CartApi.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<CheckoutHeaderDtoMsg>> Checkout(CheckoutHeaderDtoMsg checkoutDtoMsg)
         {
-            throw new NotImplementedException();
-            //var cart = await _cartService.FindCartByUserId(checkoutDtoMsg.UserId);
+            var cart = await _cartService.FindCartByUserId(checkoutDtoMsg.UserId);
 
-            //if (cart == null) return NotFound();
-            //checkoutDtoMsg.CartDetails = cart.CartDetails;
-            //checkoutDtoMsg.DateTime = DateTime.Now;
+            if (cart == null) return NotFound();
+            checkoutDtoMsg.CartDetails = cart.CartDetails;
+            checkoutDtoMsg.DateTime = DateTime.Now;
 
             ////TASK RabbitMQ logic comes here!!!
+            _rabbitMQMessageSender.SendMessage(checkoutDtoMsg, "checkoutqueue");
 
-            //return Ok(checkoutDtoMsg);
+            return Ok(checkoutDtoMsg);
         }
     }
 }
