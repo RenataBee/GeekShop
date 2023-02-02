@@ -1,4 +1,4 @@
-﻿namespace GeekShopping.Web.Models
+﻿namespace GeekShop.Web.Models
 {
     public class CouponViewModel
     {

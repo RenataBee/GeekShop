@@ -1,7 +1,7 @@
 ﻿using GeekShop.CartApi.DTOs;
+using GeekShop.CartApi.IRepository;
 using GeekShop.CartApi.IService;
 using GeekShop.CartApi.Messages;
-using GeekShop.CartApi.Model;
 using GeekShop.CartApi.RabbitMQSender;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +12,16 @@ namespace GeekShop.CartApi.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
+        //private readonly ICouponService _couponService;
+        private readonly ICouponRepository _couponRepository;
         private IRabbitMQMessageSender _rabbitMQMessageSender;
 
-        public CartController(ICartService cartService, IRabbitMQMessageSender rabbitMQMessageSender)
+        public CartController(ICartService cartService, ICouponRepository couponRepository, //ICouponService couponService,
+            IRabbitMQMessageSender rabbitMQMessageSender)
         {
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
+            _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));
+            //_couponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
             _rabbitMQMessageSender = rabbitMQMessageSender ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
 
@@ -74,13 +79,25 @@ namespace GeekShop.CartApi.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<CheckoutHeaderDtoMsg>> Checkout(CheckoutHeaderDtoMsg checkoutDtoMsg)
         {
-            var cart = await _cartService.FindCartByUserId(checkoutDtoMsg.UserId);
+            string token = Request.Headers["Authorization"];
 
+            if (checkoutDtoMsg?.UserId == null) return BadRequest();
+
+            var cart = await _cartService.FindCartByUserId(checkoutDtoMsg.UserId);
             if (cart == null) return NotFound();
+
+            if (!string.IsNullOrEmpty(checkoutDtoMsg.CouponCode))
+            {
+                CouponDto coupon = await _couponRepository.GetCoupon(checkoutDtoMsg.CouponCode, token);
+                if (checkoutDtoMsg.DiscountAmount != coupon.DiscountAmount)
+                {
+                    return StatusCode(412);
+                }
+            }
             checkoutDtoMsg.CartDetails = cart.CartDetails;
             checkoutDtoMsg.DateTime = DateTime.Now;
 
-            ////TASK RabbitMQ logic comes here!!!
+            // RabbitMQ logic comes here!!!
             _rabbitMQMessageSender.SendMessage(checkoutDtoMsg, "checkoutqueue");
 
             return Ok(checkoutDtoMsg);

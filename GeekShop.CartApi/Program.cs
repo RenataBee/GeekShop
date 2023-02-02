@@ -26,10 +26,18 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //Add dependecy injection
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<ICouponService, CouponService>();
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+
+//Add dependecy injection - MessageBus
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 
 // Add services to the container.
 builder.Services.AddControllers();
+
+//Add Http Client
+builder.Services.AddHttpClient<ICouponService, CouponService>(c =>
+    c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponApi"]));
 
 //Add authentication
 builder.Services.AddAuthentication("Bearer").AddJwtBearer("Bearer", options =>

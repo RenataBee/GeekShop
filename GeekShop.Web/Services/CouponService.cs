@@ -1,10 +1,10 @@
-﻿using GeekShop.Web.Utils;
-using GeekShopping.Web.Models;
-using GeekShopping.Web.Services.IServices;
+﻿using GeekShop.Web.Models;
+using GeekShop.Web.Services.IService;
+using GeekShop.Web.Utils;
 using System.Net;
 using System.Net.Http.Headers;
 
-namespace GeekShopping.Web.Services
+namespace GeekShop.Web.Services
 {
     public class CouponService : ICouponService
     {

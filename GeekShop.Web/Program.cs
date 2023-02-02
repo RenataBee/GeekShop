@@ -1,17 +1,15 @@
 using GeekShop.Web.Services;
 using GeekShop.Web.Services.IService;
-using GeekShopping.Web.Services;
-using GeekShopping.Web.Services.IServices;
 using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
 //Dependecy Injection
 builder.Services.AddMvc();
-builder.Services.AddScoped<GeekShop.Web.Services.IService.IProductService, GeekShop.Web.Services.ProductService>();
+//builder.Services.AddScoped<GeekShop.Web.Services.IService.IProductService, GeekShop.Web.Services.ProductService>();
 
-//Mapper
-builder.Services.AddHttpClient<GeekShop.Web.Services.IService.IProductService, GeekShop.Web.Services.ProductService>(c =>
+//Add Http Client
+builder.Services.AddHttpClient<IProductService, ProductService>(c =>
     c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:ProductApi"]));
 
 builder.Services.AddHttpClient<ICartService, CartService>(c =>

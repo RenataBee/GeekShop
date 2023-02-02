@@ -1,9 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GeekShop.Web.Models;
 using GeekShop.Web.Services.IService;
-using Microsoft.AspNetCore.Authorization;
-using GeekShop.Web.Models;
 using Microsoft.AspNetCore.Authentication;
-using GeekShopping.Web.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShop.Web.Controllers
 {

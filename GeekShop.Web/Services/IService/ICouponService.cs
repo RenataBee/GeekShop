@@ -1,7 +1,7 @@
-﻿using GeekShopping.Web.Models;
-using System.Threading.Tasks;
+﻿
+using GeekShop.Web.Models;
 
-namespace GeekShopping.Web.Services.IServices
+namespace GeekShop.Web.Services.IService
 {
     public interface ICouponService
     {
