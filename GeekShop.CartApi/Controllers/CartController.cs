@@ -3,6 +3,7 @@ using GeekShop.CartApi.IRepository;
 using GeekShop.CartApi.IService;
 using GeekShop.CartApi.Messages;
 using GeekShop.CartApi.RabbitMQSender;
+using GeekShop.CartApi.Repository;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GeekShop.CartApi.Controllers
@@ -19,7 +20,7 @@ namespace GeekShop.CartApi.Controllers
             IRabbitMQMessageSender rabbitMQMessageSender)
         {
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
-            _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));            
+            _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));
             _rabbitMQMessageSender = rabbitMQMessageSender ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
 
@@ -33,7 +34,7 @@ namespace GeekShop.CartApi.Controllers
         }
 
         [HttpPost("add-cart")]
-        public async Task<ActionResult<CartDto>> AddCart(CartDto input)        
+        public async Task<ActionResult<CartDto>> AddCart(CartDto input)
         {
             var cart = await _cartService.SaveOrUpdateCart(input);
             if (cart == null) return NotFound();
@@ -105,3 +106,5 @@ namespace GeekShop.CartApi.Controllers
         }
     }
 }
+
+

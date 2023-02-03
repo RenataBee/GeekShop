@@ -4,9 +4,8 @@ using Microsoft.AspNetCore.Authentication;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Dependecy Injection
-builder.Services.AddMvc();
-//builder.Services.AddScoped<GeekShop.Web.Services.IService.IProductService, GeekShop.Web.Services.ProductService>();
+////Dependecy Injection
+//builder.Services.AddMvc();
 
 //Add Http Client
 builder.Services.AddHttpClient<IProductService, ProductService>(c =>

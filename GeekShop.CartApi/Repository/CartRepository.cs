@@ -50,11 +50,12 @@ namespace GeekShop.CartApi.Repository
 
         public async Task<CartDto> FindCartByUserId(string userId)
         {
-            Cart cart = new()
+            Cart cart = new Cart()
             {
-                CartHeader = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId),
-            };
-
+                CartHeader = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId) 
+                ?? new CartHeader()
+            };         
+           
             if (cart != null)
             {
                 cart.CartDetails = _dataContext.CartDetails.
