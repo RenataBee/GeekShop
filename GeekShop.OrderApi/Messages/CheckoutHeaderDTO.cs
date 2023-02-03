@@ -1,7 +1,7 @@
 ﻿using GeekShop.MessageBus;
 using GeekShop.OrderAPI.Messages;
 
-namespace GeekShopping.OrderAPI.Messages
+namespace GeekShop.OrderAPI.Messages
 {
     public class CheckoutHeaderDTO : BaseMessage
     {

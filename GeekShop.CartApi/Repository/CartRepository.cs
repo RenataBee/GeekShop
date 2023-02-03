@@ -34,15 +34,15 @@ namespace GeekShop.CartApi.Repository
 
         public async Task<bool> ClearCart(string userId)
         {
-            var cartHeader = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId);
-
+            var cartHeader = await _dataContext.CartHeaders
+                         .FirstOrDefaultAsync(c => c.UserId == userId);
             if (cartHeader != null)
             {
-                _dataContext.CartDetails.RemoveRange(_dataContext.CartDetails.
-                    Where(c => c.CartHeaderId == cartHeader.Id));
+                _dataContext.CartDetails.RemoveRange(_dataContext.CartDetails.Where(c => c.CartHeaderId == cartHeader.Id));
 
                 _dataContext.CartHeaders.Remove(cartHeader);
                 await _dataContext.SaveChangesAsync();
+
                 return true;
             }
             return false;

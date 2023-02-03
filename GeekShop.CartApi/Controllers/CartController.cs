@@ -12,16 +12,14 @@ namespace GeekShop.CartApi.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
-        //private readonly ICouponService _couponService;
         private readonly ICouponRepository _couponRepository;
         private IRabbitMQMessageSender _rabbitMQMessageSender;
 
-        public CartController(ICartService cartService, ICouponRepository couponRepository, //ICouponService couponService,
+        public CartController(ICartService cartService, ICouponRepository couponRepository,
             IRabbitMQMessageSender rabbitMQMessageSender)
         {
             _cartService = cartService ?? throw new ArgumentNullException(nameof(cartService));
-            _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));
-            //_couponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
+            _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));            
             _rabbitMQMessageSender = rabbitMQMessageSender ?? throw new ArgumentNullException(nameof(rabbitMQMessageSender));
         }
 
@@ -99,6 +97,9 @@ namespace GeekShop.CartApi.Controllers
 
             // RabbitMQ logic comes here!!!
             _rabbitMQMessageSender.SendMessage(checkoutDtoMsg, "checkoutqueue");
+
+            //Clear Cart
+            await _cartService.ClearCart(checkoutDtoMsg.UserId);
 
             return Ok(checkoutDtoMsg);
         }

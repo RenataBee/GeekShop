@@ -1,34 +1,18 @@
-using GeekShop.OrderApi.MessageConsumer;
-using GeekShop.OrderApi.Model.Context;
-using GeekShop.OrderApi.Repository;
-using GeekShop.OrderAPI.MessageConsumer;
-using GeekShop.OrderAPI.RabbitMQSender;
-using Microsoft.EntityFrameworkCore;
+using GeekShop.PaymentApi.MessageConsumer;
+using GeekShop.PaymentApi.RabbitMQSender;
+using GeekShop.PaymentProcess.IService;
+using GeekShop.PaymentProcess.Service;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-//Add DataContext
-builder.Services.AddDbContext<DataContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
 
-var connection = builder.Configuration.GetConnectionString("DefaultConnection");
-
-//Create dbContext variable
-var dbContextBuilder = new DbContextOptionsBuilder<DataContext>();
-dbContextBuilder.UseSqlServer(connection);
-
-//Add Dependency injection
-builder.Services.AddSingleton(new OrderRepository(dbContextBuilder.Options));
-
-//Add dependecy injection - MessageBus
+//Add Dependency Injection
+builder.Services.AddSingleton<IProcessPayment, ProcessPayment>();
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 
-//Add Host Service
-builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
+//Add Host Services
 builder.Services.AddHostedService<RabbitMQPaymentConsumer>();
 
 // Add services to the container.
@@ -58,7 +42,7 @@ builder.Services.AddAuthorization(options =>
 //Add swagger
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.OrderApi", Version = "v1" });    
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "GeekShop.PaymentApi", Version = "v1" });
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"Enter 'Bearer' [space] and your token!",
@@ -92,7 +76,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
     app.UseSwagger();
-    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.OrderApi v1"));
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "GeekShop.PaymentApi v1"));
 }
 
 app.UseHttpsRedirection();
@@ -104,4 +88,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
 
