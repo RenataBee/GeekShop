@@ -52,10 +52,10 @@ namespace GeekShop.CartApi.Repository
         {
             Cart cart = new Cart()
             {
-                CartHeader = await _dataContext.CartHeaders.FirstOrDefaultAsync(c => c.UserId == userId) 
-                ?? new CartHeader()
-            };         
-           
+                CartHeader = await _dataContext.CartHeaders.
+                FirstOrDefaultAsync(c => c.UserId == userId) ?? new CartHeader()
+            };
+
             if (cart != null)
             {
                 cart.CartDetails = _dataContext.CartDetails.
@@ -68,7 +68,7 @@ namespace GeekShop.CartApi.Repository
         {
             try
             {
-                CartDetail cartDetail = await _dataContext.CartDetails.FirstOrDefaultAsync(c => 
+                CartDetail cartDetail = await _dataContext.CartDetails.FirstOrDefaultAsync(c =>
                 c.Id == cartDetailId);
 
                 int total = _dataContext.CartDetails.
@@ -116,7 +116,7 @@ namespace GeekShop.CartApi.Repository
 
                 cart.CartDetails.FirstOrDefault().CartHeaderId = cart.CartHeader.Id;
                 cart.CartDetails.FirstOrDefault().Product = null;
-                
+
                 _dataContext.CartDetails.Add(cart.CartDetails.FirstOrDefault());
                 await _dataContext.SaveChangesAsync();
             }
@@ -127,7 +127,7 @@ namespace GeekShop.CartApi.Repository
                 var cartDetail = await _dataContext.CartDetails.AsNoTracking().FirstOrDefaultAsync(
                     p => p.ProductId == cart.CartDetails.FirstOrDefault().ProductId &&
                     p.CartHeaderId == cartHeader.Id);
-                
+
                 if (cartDetail == null)
                 {
                     //Create CartDetails
