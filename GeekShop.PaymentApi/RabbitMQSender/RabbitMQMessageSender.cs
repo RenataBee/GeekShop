@@ -14,7 +14,7 @@ namespace GeekShop.PaymentApi.RabbitMQSender
 
         private IConnection _connection;
 
-        private const string ExchangeName = "FanoutPaymentUpdateExchange";
+        private const string ExchangeName = "DirectPaymentUpdate_Exchange";
         private const string PaymentEmailUpdateQueueName = "PaymentEmailUpdateQueueName";
         private const string PaymentOrderUpdateQueueName = "PaymentOrderUpdateQueueName";
 
