@@ -1,9 +1,7 @@
 using AutoMapper;
 using GeekShop.CouponApi.Config.Mapping;
 using GeekShop.CouponApi.IRepository;
-using GeekShop.CouponApi.IServices;
 using GeekShop.CouponApi.Repository;
-using GeekShop.CouponApi.Services;
 using GeekShop.CuponApi.Model.DataContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,7 +21,6 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //Add dependecy injection
-builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 // Add services to the container.

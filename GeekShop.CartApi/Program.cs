@@ -26,7 +26,6 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //Add dependecy injection
 builder.Services.AddScoped<ICartService, CartService>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
-builder.Services.AddScoped<ICouponService, CouponService>();
 builder.Services.AddScoped<ICouponRepository, CouponRepository>();
 
 //Add dependecy injection - MessageBus
@@ -36,7 +35,7 @@ builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 builder.Services.AddControllers();
 
 //Add Http Client
-builder.Services.AddHttpClient<ICouponService, CouponService>(c =>
+builder.Services.AddHttpClient<ICouponRepository, CouponRepository>(c =>
     c.BaseAddress = new Uri(builder.Configuration["ServiceUrls:CouponApi"]));
 
 //Add authentication

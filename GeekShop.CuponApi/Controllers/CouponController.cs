@@ -1,5 +1,5 @@
 ﻿using GeekShop.CouponApi.DTOs;
-using GeekShop.CouponApi.IServices;
+using GeekShop.CouponApi.IRepository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,18 +9,18 @@ namespace GeekShop.CouponApi.Controllers
     [ApiController]
     public class CouponController : ControllerBase
     {
-        private readonly ICouponService _couponService;
+        private readonly ICouponRepository _couponRepository;
 
-        public CouponController(ICouponService couponService)
+        public CouponController(ICouponRepository couponRepository)
         {
-            _couponService = couponService ?? throw new ArgumentNullException(nameof(couponService));
+            _couponRepository = couponRepository ?? throw new ArgumentNullException(nameof(couponRepository));
         }
 
         [HttpGet("{couponCode}")]
         [Authorize]
         public async Task<ActionResult<CouponDTO>> GetCouponByCouponCode(string couponCode)
         {
-            var couponDtoBD = await _couponService.GetCouponByCouponCode(couponCode);
+            var couponDtoBD = await _couponRepository.GetCouponByCouponCode(couponCode);
 
             if (couponDtoBD == null) return NotFound();
             return Ok(couponDtoBD);

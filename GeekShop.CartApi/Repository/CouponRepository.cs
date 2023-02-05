@@ -22,11 +22,11 @@ namespace GeekShop.CartApi.Repository
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _client.GetAsync($"/api/v1/coupon/{couponCode}");
             var content = await response.Content.ReadAsStringAsync();
-
+            
             if (response.StatusCode != HttpStatusCode.OK) return new CouponDto();
-            return JsonSerializer.Deserialize<CouponDto>(content, new
-                JsonSerializerOptions
-            { PropertyNameCaseInsensitive = true });
+            return JsonSerializer.Deserialize<CouponDto>(content,
+                new JsonSerializerOptions
+                { PropertyNameCaseInsensitive = true });
         }
     }
 }
