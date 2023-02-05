@@ -25,6 +25,7 @@ dbContextBuilder.UseSqlServer(connection);
 builder.Services.AddSingleton(new OrderRepository(dbContextBuilder.Options));
 
 //Add dependecy injection - MessageBus
+builder.Services.AddHostedService<RabbitMQCheckoutConsumer>();
 builder.Services.AddSingleton<IRabbitMQMessageSender, RabbitMQMessageSender>();
 
 //Add Host Service
