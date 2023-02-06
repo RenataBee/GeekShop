@@ -79,7 +79,6 @@ namespace GeekShop.CartApi.Controllers
         [HttpPost("checkout")]
         public async Task<ActionResult<CheckoutHeaderDtoMsg>> Checkout(CheckoutHeaderDtoMsg checkoutDtoMsg)
         {
-            //string token = Request.Headers["Authorization"];
             var token = await HttpContext.GetTokenAsync("access_token");
 
             if (checkoutDtoMsg?.UserId == null) return BadRequest();
