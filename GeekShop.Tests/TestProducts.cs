@@ -25,12 +25,13 @@ namespace GeekShop.Tests
             return listOfProducts;
         }
 
-        [Fact]
-        public ProductTest GetProductById()
+        [Theory]
+        [InlineData(2)]
+        public ProductTest GetProductById(int id)
         {
             //Organization
             var listOfProducts = CreateProductArray();
-            var id = 2;
+           // id = 2;
 
             //Action
             var product = listOfProducts.FirstOrDefault(p => p.Id == id);
@@ -107,12 +108,12 @@ namespace GeekShop.Tests
             return isUpdated;
         }
 
-        [Fact]
-        public bool DeleteProduct()
+        [Theory]
+        [InlineData(2)]
+        public bool DeleteProduct(int id)
         {
             var isDeleted = false;
-            var id = 2;
-
+            
             //Organization
             var listOfProducts = CreateProductArray();
             var productReturn = listOfProducts.Where(p => p.Id == id).FirstOrDefault();
@@ -120,7 +121,7 @@ namespace GeekShop.Tests
             //Action
             if (productReturn != null)
             {
-                foreach (var item in listOfProducts)
+                foreach (var item in listOfProducts.ToList())
                 {
                     if (item.Id == id)
                     {
