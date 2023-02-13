@@ -28,7 +28,7 @@ namespace GeekShop.ProductApi.Repository
         public async Task<ProductDto> GetProductById(int id)
         {
             Product product = await _dataContext.Products.
-                Where(p => p.Id == id). 
+                Where(p => p.Id == id).
                 FirstOrDefaultAsync() ?? new Product();
 
             return _mapper.Map<ProductDto>(product);
@@ -47,17 +47,17 @@ namespace GeekShop.ProductApi.Repository
         public async Task<ProductDto> UpdateProduct(ProductDto productDto)
         {
             var dbProduct = await _dataContext.Products.Where(p => p.Id == productDto.Id).FirstOrDefaultAsync();
-            
+
             if (dbProduct != null)
             {
                 dbProduct.Name = productDto.Name;
                 dbProduct.Description = productDto.Description;
-                dbProduct.price = productDto.price;
+                dbProduct.Price = productDto.price;
                 dbProduct.CategoryName = productDto.CategoryName;
                 dbProduct.ImageUrl = productDto.ImageUrl;
             }
 
-             _dataContext.Update(dbProduct);
+            _dataContext.Update(dbProduct);
             await _dataContext.SaveChangesAsync();
             return _mapper.Map<ProductDto>(dbProduct);
         }
@@ -67,10 +67,10 @@ namespace GeekShop.ProductApi.Repository
             try
             {
                 var dbProduct = await _dataContext.Products.Where(p => p.Id == id).FirstOrDefaultAsync() ?? new Product();
-                
+
                 if (dbProduct.Id <= 0) return false;
                 _dataContext.Remove(dbProduct);
-                
+
                 await _dataContext.SaveChangesAsync();
                 return true;
 

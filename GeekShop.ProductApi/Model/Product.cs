@@ -15,7 +15,7 @@ namespace GeekShop.ProductApi.Model
         [Column("price")]
         [Required]
         [Range(1, 10000)]
-        public decimal price { get; set; }
+        public decimal Price { get; set; }
 
         [Column("description")]
         [StringLength(500)]
