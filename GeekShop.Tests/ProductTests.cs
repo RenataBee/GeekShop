@@ -10,42 +10,47 @@ using GeekShop.Tests.Models;
 
 namespace GeekShop.Tests
 {
-    public class TestProducts
+    public class ProductTests
     {
-        [Fact]
-        public List<ProductTest> GetProducts()
-        {
-            //Organization
+        private const int _countOfList = 3;
+        private const int _expectedNumberOfProductsAfterAdd = 4;
+        private const int _expectedNumberOfProductsAfterDelete = 2;
 
+        private const string _nameOfProductAfterUpdate = "NAME OF PRODUCT";
+
+        [Fact]
+        public void GetProducts()
+        {
+            //Arrange
+            var listOfProducts = new List<Product>();
+            listOfProducts = CreateProductArray();
 
             //Action
-            var listOfProducts = CreateProductArray();
+            var countList = listOfProducts.Count;
 
             ////Assert
-            return listOfProducts;
+            Assert.Equal(expected: _countOfList, actual: countList);
         }
 
         [Theory]
         [InlineData(2)]
-        public ProductTest GetProductById(int id)
+        public void GetProductById(int id)
         {
-            //Organization
+            //Arrange
             var listOfProducts = CreateProductArray();
-           // id = 2;
 
             //Action
             var product = listOfProducts.FirstOrDefault(p => p.Id == id);
 
             ////Assert
-            return product;
+            Assert.Equal(expected: product.Id, actual: id);
         }
 
         [Fact]
-        public bool AddProduct()
+        public void AddProduct()
         {
-            var isAdded = false;
-            //Organization
-            ProductTest product = new ProductTest()
+            //Arrange
+            Product product = new Product()
             {
                 Id = 4,
                 Name = "CANECA HELLO KITTY REDONDA",
@@ -60,33 +65,22 @@ namespace GeekShop.Tests
             if (listOfProducts.Count > 0)
                 listOfProducts.Add(product);
 
-            foreach (var item in listOfProducts)
-            {
-                if (item.Id == 4)
-                {
-                    isAdded = true;
-                    return isAdded;
-                }
-            }
-
             ////Assert
-            return isAdded;
+            Assert.Equal(expected: _expectedNumberOfProductsAfterAdd, actual: listOfProducts.Count);
         }
 
-        [Fact]
-        public bool UpdateProduct()
+        [Theory]
+        [InlineData(2)]
+        public void UpdateProduct(int id)
         {
-            var isUpdated = false;
-            var id = 2;
-
-            //Organization
+            //Arrange
             var listOfProducts = CreateProductArray();
             var productReturn = listOfProducts.Where(p => p.Id == id).FirstOrDefault();
 
-            ProductTest product = new ProductTest()
+            Product product = new Product()
             {
                 Id = 2,
-                Name = "UPDATE TEST - CANECA STRANGER THINGS CHIBI",
+                Name = "UPDATE NAME OF PRODUCT",
                 Price = Convert.ToDecimal(15.99),
                 Description = "A Caneca Stranger Things Chibi é um produto original e licenciado da Piticas. Feito para você expressar o seu lado fã da série Stranger Things. Ideal para presentear ou colecionar. Caneca de cerâmica - Altura: 14,5cm | Comprimento: 10cm | Largura: 9,5cm capacidade: 400ml",
                 CategoryName = "Canecas",
@@ -95,26 +89,18 @@ namespace GeekShop.Tests
 
             //Action
             if (productReturn != null)
-            {
                 productReturn = product;
 
-                if (productReturn.Name.Contains("UPDATE TEST - "))
-                {
-                    isUpdated = true;
-                }
-            }
-
             ////Assert
-            return isUpdated;
+            Assert.Contains(_nameOfProductAfterUpdate, productReturn.Name);
         }
 
         [Theory]
         [InlineData(2)]
-        public bool DeleteProduct(int id)
+        public void DeleteProduct(int id)
         {
-            var isDeleted = false;
-            
-            //Organization
+
+            //Arrange
             var listOfProducts = CreateProductArray();
             var productReturn = listOfProducts.Where(p => p.Id == id).FirstOrDefault();
 
@@ -126,20 +112,19 @@ namespace GeekShop.Tests
                     if (item.Id == id)
                     {
                         listOfProducts.Remove(productReturn);
-                        isDeleted = true;   
                     }
                 }
             }
 
             ////Assert
-            return isDeleted;
+            Assert.Equal(expected: _expectedNumberOfProductsAfterDelete, actual: listOfProducts.Count);
         }
 
-        public List<ProductTest> CreateProductArray()
+        public List<Product> CreateProductArray()
         {
-            List<ProductTest> productTests = new List<ProductTest>()
+            List<Product> productTests = new List<Product>()
             {
-                new ProductTest
+                new Product
                 {
                     Id = 1,
                     Name = "CANECA MULHER MARAVILHA: LAÇO DA VERDADE",
@@ -148,7 +133,7 @@ namespace GeekShop.Tests
                     CategoryName = "Canecas",
                     ImageUrl = "https://tfcprw.vtexassets.com/arquivos/ids/167379-800-auto?v=637976693564530000&width=800&height=auto&aspect=true"
                 },
-                 new ProductTest
+                 new Product
                 {
                     Id = 2,
                     Name = "CANECA STRANGER THINGS CHIBI",
@@ -157,7 +142,7 @@ namespace GeekShop.Tests
                     CategoryName = "Canecas",
                     ImageUrl = "https://tfcprw.vtexassets.com/arquivos/ids/166882-800-auto?v=637976691643600000&width=800&height=auto&aspect=true"
                 },
-                  new ProductTest
+                  new Product
                 {
                     Id = 3,
                     Name = "CANECA HARRY POTTER - POMO DE OURO",
