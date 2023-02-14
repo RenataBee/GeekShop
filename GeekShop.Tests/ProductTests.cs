@@ -7,6 +7,7 @@
  */
 
 using GeekShop.Tests.Models;
+using Xunit.Abstractions;
 
 namespace GeekShop.Tests
 {
@@ -17,6 +18,13 @@ namespace GeekShop.Tests
         private const int _expectedNumberOfProductsAfterDelete = 2;
 
         private const string _nameOfProductAfterUpdate = "NAME OF PRODUCT";
+
+        private readonly ITestOutputHelper _outputHelper;
+
+        public ProductTests(ITestOutputHelper outputHelper)
+        {
+            _outputHelper = outputHelper;
+        }
 
         [Fact]
         public void GetProducts()
@@ -29,6 +37,7 @@ namespace GeekShop.Tests
             var countList = listOfProducts.Count;
 
             ////Assert
+            _outputHelper.WriteLine($"O resultado esperado é: {_countOfList}");
             Assert.Equal(expected: _countOfList, actual: countList);
         }
 
@@ -43,6 +52,7 @@ namespace GeekShop.Tests
             var product = listOfProducts.FirstOrDefault(p => p.Id == id);
 
             ////Assert
+            _outputHelper.WriteLine($"O produto retornado é: {product.Id}");
             Assert.Equal(expected: product.Id, actual: id);
         }
 
@@ -66,6 +76,7 @@ namespace GeekShop.Tests
                 listOfProducts.Add(product);
 
             ////Assert
+            _outputHelper.WriteLine($"O produto adicionado foi: {_expectedNumberOfProductsAfterAdd}");
             Assert.Equal(expected: _expectedNumberOfProductsAfterAdd, actual: listOfProducts.Count);
         }
 
@@ -92,6 +103,7 @@ namespace GeekShop.Tests
                 productReturn = product;
 
             ////Assert
+            _outputHelper.WriteLine($"O produto atualizado foi: {_nameOfProductAfterUpdate}");
             Assert.Contains(_nameOfProductAfterUpdate, productReturn.Name);
         }
 
@@ -117,6 +129,7 @@ namespace GeekShop.Tests
             }
 
             ////Assert
+            _outputHelper.WriteLine($"O produto deletado foi: {_expectedNumberOfProductsAfterDelete}");
             Assert.Equal(expected: _expectedNumberOfProductsAfterDelete, actual: listOfProducts.Count);
         }
 
