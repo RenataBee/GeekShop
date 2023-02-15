@@ -1,4 +1,4 @@
-﻿namespace GeekShop.Tests.Models
+﻿namespace GeekShop.Tests.Models.ProductModel
 {
     public class Product
     {
