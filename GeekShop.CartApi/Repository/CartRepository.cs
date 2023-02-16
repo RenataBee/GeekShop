@@ -94,7 +94,7 @@ namespace GeekShop.CartApi.Repository
         {
             Cart cart = _mapper.Map<Cart>(cartDto);
 
-            //Checks if the product is already saved in the database if it does not exist then save
+            //Checks if the product is already saved in the database if it doesn't exist then save
             var product = await _dataContext.Products.FirstOrDefaultAsync(p => p.Id == cartDto.CartDetails.FirstOrDefault().ProductId);
 
             if (product == null)
