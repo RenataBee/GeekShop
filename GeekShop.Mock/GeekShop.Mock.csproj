@@ -62,8 +62,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IRepository\IGetProductRepository.cs" />
-    <Compile Include="Repository\GetProductRepository.cs" />
+    <Compile Include="IRepository\IProductRepository.cs" />
+    <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="DataModel\ProductData.cs" />
     <Compile Include="UnitTest.cs" />
