@@ -18,14 +18,14 @@ namespace GeekShop.Tests.DataModel
                 new CartDetail()
                 {
                     Id = 2,
-                    CartHeaderId = 1,
+                    CartHeaderId = 2,
                     ProductId = 2,
                     Count = 1
                 },
                 new CartDetail()
                 {
                     Id = 3,
-                    CartHeaderId = 1,
+                    CartHeaderId = 3,
                     ProductId = 3,
                     Count = 2
                 }

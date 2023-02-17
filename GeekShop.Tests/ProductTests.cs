@@ -15,7 +15,7 @@ namespace GeekShop.Tests
 {
     public class ProductTests : IProduct
     {
-        private readonly ProductData _productData;
+        private ProductData _productData = new ProductData();
         private readonly ITestOutputHelper _outputHelper;
 
         private const int _countOfList = 3;
@@ -24,9 +24,8 @@ namespace GeekShop.Tests
 
         private const string _nameOfProductAfterUpdate = "NAME OF PRODUCT";
 
-        public ProductTests(ProductData productData, ITestOutputHelper outputHelper)
+        public ProductTests(ITestOutputHelper outputHelper)
         {
-            _productData = productData;
             _outputHelper = outputHelper;
         }
 
@@ -146,7 +145,7 @@ namespace GeekShop.Tests
 
             if (_expectedNumberOfProductsAfterDelete == listOfProducts.Count)
                 isDeleted = true;
-            
+
             ////Assert
             _outputHelper.WriteLine($"O produto deletado foi: {_expectedNumberOfProductsAfterDelete}");
             Assert.Equal(expected: _expectedNumberOfProductsAfterDelete, actual: listOfProducts.Count);
